@@ -10,9 +10,13 @@ const UsersTable = ({ users }) => {
     const user = await getById(userId)
     setSelectedUser(user);
   }
+
+  const onClose = () => {
+    setSelectedUser(null);
+  }
     return(
       <>
-      {selectedUser && <UserDetails {...selectedUser}/>}
+      {selectedUser && <UserDetails {...selectedUser} onClose={onClose} />}
         <table className="table">
           <thead>
             <tr>
