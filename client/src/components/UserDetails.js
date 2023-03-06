@@ -1,3 +1,5 @@
+import { formatDate } from '../utils/dateUtil';
+
 const UserDetails = ({
     _id,
   firstName,
@@ -43,8 +45,8 @@ const UserDetails = ({
                                 <strong>{`${address.country}, ${address.city}, ${address.street} ${address.streetNumber}`} </strong>
                             </p>
 
-                            <p>Created on: <strong>{createdAt}</strong></p>
-                            <p>Modified on: <strong>{updatedAt}</strong></p>
+                            <p>Created on: <strong>{formatDate(createdAt)}</strong></p>
+                            <p>Modified on: <strong>{formatDate(updatedAt)}</strong></p>
                         </div>
                     </div>
                 </div>

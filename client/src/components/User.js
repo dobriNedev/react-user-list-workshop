@@ -1,3 +1,5 @@
+import { formatDate } from '../utils/dateUtil';
+ 
 const User = ({
   _id,
   firstName,
@@ -18,7 +20,7 @@ const User = ({
               <td>{lastName}</td>
               <td>{email}</td>
               <td>{phoneNumber}</td>
-              <td>{createdAt}</td>
+              <td>{formatDate(createdAt)}</td>
 
               <td className="actions">
                 <button className="btn edit-btn" title="Edit">
