@@ -1,7 +1,18 @@
+import { useState } from 'react';
 import User from "./User";
+import UserDetails from './UserDetails';
+import { getById } from '../services/userService';
 
 const UsersTable = ({ users }) => {
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  const onInfoClick = async(userId) => {
+    const user = await getById(userId)
+    setSelectedUser(user);
+  }
     return(
+      <>
+      {selectedUser && <UserDetails {...selectedUser}/>}
         <table className="table">
           <thead>
             <tr>
@@ -48,10 +59,12 @@ const UsersTable = ({ users }) => {
             </tr>
           </thead>
           <tbody>
-            {users.map(u => <User key={u._id} {...u}/>)}
-            
+
+            {users.map(u => <User key={u._id} {...u} onInfoClick={onInfoClick}/>)}
+    
           </tbody>
         </table>
+      </>
     );
 };
 
