@@ -1,6 +1,6 @@
 import User from "./User";
 
-const UsersTable = () => {
+const UsersTable = ({ users }) => {
     return(
         <table className="table">
           <thead>
@@ -48,7 +48,8 @@ const UsersTable = () => {
             </tr>
           </thead>
           <tbody>
-            <User />
+            {users.map(u => <User key={u._id} {...u}/>)}
+            
           </tbody>
         </table>
     );
