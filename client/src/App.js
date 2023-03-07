@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import {getAll, create } from './services/userService'
+import { getAll, create, remove } from './services/userService'
 import './App.css';
 import Footer from './components/Footer';
 import Header from './components/Header';
@@ -10,42 +10,48 @@ import UsersTable from './components/UsersTable';
 
 function App() {
   const [users, setUsers] = useState([]);
- 
+
   useEffect(() => {
-      getAll()
-        .then(users => {
-          setUsers(users)
-        })
-        .catch(err => {
-          console.log('Error:' + err);
-        })
+    getAll()
+      .then(users => {
+        setUsers(users)
+      })
+      .catch(err => {
+        console.log('Error:' + err);
+      })
   }, []);
 
-  const onUserCreateSubmit = async(e) =>{
+  const onUserCreateSubmit = async (e) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData);
 
     const createdUser = await create(data);
-    console.log(createdUser);
-    //TODO: add new user to state
+    
     setUsers(state => [...state, createdUser]);
-    //TODO: close dialog with server
-  }
- 
+  };
+
+  const onUserDelete = async (userId) => {
+    await remove(userId);
+
+    setUsers(state => state.filter(user => user._id !== userId));
+  };
+
   return (
     <>
       <Header />
-        <main className="main">
-          <section className="card users-container">
-            <Search />
-            
-            <UsersTable users={users} onUserCreateSubmit={onUserCreateSubmit} />
+      <main className="main">
+        <section className="card users-container">
+          <Search />
 
-            <Pagination />
-          </section>
-        </main> 
+          <UsersTable
+            users={users}
+            onUserCreateSubmit={onUserCreateSubmit}
+            onUserDelete={onUserDelete} />
+          <Pagination />
+        </section>
+      </main>
       <Footer />
     </>
   );

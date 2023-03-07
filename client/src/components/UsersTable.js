@@ -3,14 +3,17 @@ import User from "./User";
 import UserDetails from './UserDetails';
 import { getById } from '../services/userService';
 import CreateOrEditUser from './CreateOrEditUser';
+import DeleteUser from './DeleteUser';
 
 
 const UsersTable = ({ 
   users,
-  onUserCreateSubmit
+  onUserCreateSubmit,
+  onUserDelete
  }) => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [showAddUser, setShowAddUser] = useState(false);
+  const [showDeleteUser, setShowDeleteUser] = useState(false);
 
   const onInfoClick = async(userId) => {
     const user = await getById(userId)
@@ -20,6 +23,7 @@ const UsersTable = ({
   const onClose = () => {
     setSelectedUser(null);
     setShowAddUser(false);
+    setShowDeleteUser(false);
   }
 
   const onAddUserClick = () => {
@@ -31,7 +35,14 @@ const UsersTable = ({
     setShowAddUser(false);
   };
 
-  
+  const onDeleteClick = (userId) =>{
+    setShowDeleteUser(userId);
+  }
+
+  const onDeleteHandler = () => {
+    onUserDelete(showDeleteUser);
+    onClose();
+  }
 
     return(
       <>
@@ -39,6 +50,7 @@ const UsersTable = ({
 
       {selectedUser && <UserDetails {...selectedUser} onClose={onClose} />}
       {showAddUser && <CreateOrEditUser onClose={onClose} onUserCreateSubmit={onCreateUserSaveClick} />}
+      {showDeleteUser && <DeleteUser onClose={onClose} onDelete={onDeleteHandler} />}
       
         <table className="table">
           <thead>
@@ -87,7 +99,13 @@ const UsersTable = ({
           </thead>
           <tbody>
 
-            {users.map(u => <User key={u._id} {...u} onInfoClick={onInfoClick}/>)}
+            {users.map(u => 
+            <User 
+              key={u._id} {...u} 
+              onInfoClick={onInfoClick}
+              onDeleteClick={onDeleteClick}
+            />
+            )}
     
           </tbody>
         </table>
