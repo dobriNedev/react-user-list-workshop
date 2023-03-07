@@ -2,9 +2,12 @@ import { useState } from 'react';
 import User from "./User";
 import UserDetails from './UserDetails';
 import { getById } from '../services/userService';
+import CreateOrEditUser from './CreateOrEditUser';
+
 
 const UsersTable = ({ users }) => {
   const [selectedUser, setSelectedUser] = useState(null);
+  const [showAddUser, setShowAddUser] = useState(false);
 
   const onInfoClick = async(userId) => {
     const user = await getById(userId)
@@ -13,10 +16,21 @@ const UsersTable = ({ users }) => {
 
   const onClose = () => {
     setSelectedUser(null);
+    setShowAddUser(false);
   }
+
+  const onAddUserClick = () => {
+    console.log('adduser')
+    setShowAddUser(true);
+  };
+
     return(
       <>
+      <div className="table-wrapper">
+
       {selectedUser && <UserDetails {...selectedUser} onClose={onClose} />}
+      {showAddUser && <CreateOrEditUser onClose={onClose} />}
+      
         <table className="table">
           <thead>
             <tr>
@@ -68,6 +82,8 @@ const UsersTable = ({ users }) => {
     
           </tbody>
         </table>
+        </div>
+        <button className="btn-add btn" onClick={onAddUserClick}>Add new user</button>
       </>
     );
 };

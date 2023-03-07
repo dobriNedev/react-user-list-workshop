@@ -7,6 +7,7 @@ import Pagination from './components/Pagination';
 import Search from './components/Search';
 import UsersTable from './components/UsersTable';
 
+
 function App() {
   const [users, setUsers] = useState([]);
  
@@ -20,17 +21,17 @@ function App() {
         })
   }, []);
 
+
   return (
     <>
       <Header />
         <main className="main">
           <section className="card users-container">
             <Search />
-            <div className="table-wrapper">
-              <UsersTable users={users} />
-              <button className="btn-add btn">Add new user</button>
-              <Pagination />
-            </div>
+            
+            <UsersTable users={users} />
+
+            <Pagination />
           </section>
         </main> 
       <Footer />
