@@ -9,11 +9,13 @@ import DeleteUser from './DeleteUser';
 const UsersTable = ({ 
   users,
   onUserCreateSubmit,
-  onUserDelete
+  onUserDelete,
+  onUserEditSubmit
  }) => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [showAddUser, setShowAddUser] = useState(false);
   const [showDeleteUser, setShowDeleteUser] = useState(false);
+  const [showEditUser, setShowEditUser] = useState(null);
 
   const onInfoClick = async(userId) => {
     const user = await getById(userId)
@@ -24,6 +26,7 @@ const UsersTable = ({
     setSelectedUser(null);
     setShowAddUser(false);
     setShowDeleteUser(false);
+    setShowEditUser(null);
   }
 
   const onAddUserClick = () => {
@@ -44,6 +47,18 @@ const UsersTable = ({
     onClose();
   }
 
+  const onEditClick = async(userId) => {
+    const user = await getById(userId);
+
+    setShowEditUser(user);
+  }
+
+  const onUserEditSubmitHandler = (e, userId) => {
+    onUserEditSubmit(e, userId);
+    setShowEditUser(null);
+    //onClose();
+  };
+
     return(
       <>
       <div className="table-wrapper">
@@ -51,7 +66,7 @@ const UsersTable = ({
       {selectedUser && <UserDetails {...selectedUser} onClose={onClose} />}
       {showAddUser && <CreateOrEditUser onClose={onClose} onUserCreateSubmit={onCreateUserSaveClick} />}
       {showDeleteUser && <DeleteUser onClose={onClose} onDelete={onDeleteHandler} />}
-      
+      {showEditUser && <CreateOrEditUser user={showEditUser} onClose={onClose} onUserCreateSubmit={onUserEditSubmitHandler} />}
         <table className="table">
           <thead>
             <tr>
@@ -104,6 +119,7 @@ const UsersTable = ({
               key={u._id} {...u} 
               onInfoClick={onInfoClick}
               onDeleteClick={onDeleteClick}
+              onEditClick={onEditClick}
             />
             )}
     

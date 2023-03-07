@@ -43,7 +43,7 @@ const UserDetails = ({
                             <p>Phone Number: <strong>{phoneNumber}</strong></p>
                             <p>
                                 Address:
-                                <strong>{`${address.country}, ${address.city}, ${address.street} ${address.streetNumber}`} </strong>
+                                <strong> {`${address.country}, ${address.city}, ${address.street} ${address.streetNumber}`} </strong>
                             </p>
 
                             <p>Created on: <strong>{formatDate(createdAt)}</strong></p>

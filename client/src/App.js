@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getAll, create, remove } from './services/userService'
+import { getAll, create, remove, edit } from './services/userService'
 import './App.css';
 import Footer from './components/Footer';
 import Header from './components/Header';
@@ -38,6 +38,17 @@ function App() {
     setUsers(state => state.filter(user => user._id !== userId));
   };
 
+  const onUserEditSubmit = async(e, userId) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData);
+
+    const updatedUser = await edit(userId, data);
+
+    setUsers(state => state.map(u => u._id === userId ? updatedUser : u));
+  };
+
   return (
     <>
       <Header />
@@ -48,7 +59,9 @@ function App() {
           <UsersTable
             users={users}
             onUserCreateSubmit={onUserCreateSubmit}
-            onUserDelete={onUserDelete} />
+            onUserDelete={onUserDelete}
+            onUserEditSubmit={onUserEditSubmit}
+          />
           <Pagination />
         </section>
       </main>
