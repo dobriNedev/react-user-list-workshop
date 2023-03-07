@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import {getAll} from './services/userService'
+import {getAll, create } from './services/userService'
 import './App.css';
 import Footer from './components/Footer';
 import Header from './components/Header';
@@ -21,7 +21,19 @@ function App() {
         })
   }, []);
 
+  const onUserCreateSubmit = async(e) =>{
+    e.preventDefault();
 
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData);
+
+    const createdUser = await create(data);
+    console.log(createdUser);
+    //TODO: add new user to state
+    setUsers(state => [...state, createdUser]);
+    //TODO: close dialog with server
+  }
+ 
   return (
     <>
       <Header />
@@ -29,7 +41,7 @@ function App() {
           <section className="card users-container">
             <Search />
             
-            <UsersTable users={users} />
+            <UsersTable users={users} onUserCreateSubmit={onUserCreateSubmit} />
 
             <Pagination />
           </section>

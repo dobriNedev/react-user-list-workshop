@@ -5,7 +5,10 @@ import { getById } from '../services/userService';
 import CreateOrEditUser from './CreateOrEditUser';
 
 
-const UsersTable = ({ users }) => {
+const UsersTable = ({ 
+  users,
+  onUserCreateSubmit
+ }) => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [showAddUser, setShowAddUser] = useState(false);
 
@@ -20,16 +23,22 @@ const UsersTable = ({ users }) => {
   }
 
   const onAddUserClick = () => {
-    console.log('adduser')
     setShowAddUser(true);
   };
+
+  const onCreateUserSaveClick = (e) => {
+    onUserCreateSubmit(e);
+    setShowAddUser(false);
+  };
+
+  
 
     return(
       <>
       <div className="table-wrapper">
 
       {selectedUser && <UserDetails {...selectedUser} onClose={onClose} />}
-      {showAddUser && <CreateOrEditUser onClose={onClose} />}
+      {showAddUser && <CreateOrEditUser onClose={onClose} onUserCreateSubmit={onCreateUserSaveClick} />}
       
         <table className="table">
           <thead>
